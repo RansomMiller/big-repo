@@ -7,26 +7,15 @@ import csv
 
 mc = minecraft.Minecraft.create()
 
-def Question():
-    open("JEOPARDY_CSV.csv", "r")
+old_Questions = {}
 
+#Ransom and Ryhs's question boi
+#def Question():
+    #csvreader = csv.reader(open("JEOPARDY_CSV.csv"))
+    #x = random.randint(0, 216931)
+    #for row in csvreader:
+        #if row == x:
 
-
-
-
-
-
-
-
-
-
-
-
-##Rhys's random number generator
-
-
-random_question = randint (1 , 216930)
-print(random_question)
 
 
 
