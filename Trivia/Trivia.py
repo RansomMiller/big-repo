@@ -44,3 +44,32 @@ def spawn_answer():
 
 
 spawn_answer()s
+
+
+SIZE = 30
+pos = mc.player.getTilePos()
+x =pos.x+5
+y = pos.y
+z = pos.z
+midx = x + SIZE/2
+midy = y + SIZE/2
+mc.setBlocks(x, y, z, x+SIZE+4, y+SIZE, z+SIZE, block.EMERALD_BLOCK.id)
+mc.setBlocks(x, y, z, x+SIZE/2, y+10, z+SIZE/2, block.GLASS.id)
+mc.setBlocks(x+1, y, z+1, x+SIZE-2, y+SIZE-1, z+SIZE-2, block.AIR.id)
+
+def glasshouse():
+    SIZE = 10
+    pos = mc.player.getTilePos()
+    x = pos.x + 5
+    y = pos.y
+    z = pos.z
+    midx = x + SIZE / 2
+    midy = y + SIZE / 2
+    mc.setBlocks(x, y, z, x + SIZE, y + SIZE, z + SIZE, block.GLASS.id)
+    mc.setBlocks(x + 1, y, z + 1, x + SIZE - 2, y + SIZE - 1, z + SIZE - 2, block.AIR.id)
+    mc.setBlocks(midx - 1, y, z, midx + 1, y + 3, z, block.AIR.id)
+    mc.setBlocks(x + 3, y + SIZE - 3, z, midx - 3, z, block.GLASS.id)
+    mc.setBlocks(midx + 3, y + SIZE - 3, z, x + SIZE, z, block.GLASS.id)
+    mc.setBlocks(x, y + SIZE - 1, z, x + SIZE, y + SIZE - 1, z + SIZE, block.GLASS.id)
+    mc.setBlocks(x + 1, y - 1, z + 1, x + SIZE - 2, y - 1, z + SIZE - 2, block.GLASS.id, )
+glasshouse()
