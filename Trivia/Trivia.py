@@ -9,7 +9,7 @@ mc = minecraft.Minecraft.create()
 
 old_Questions = {}
 
-#Ransom and Ryhs's question boi
+#Ransom and Rhys's question boi
 #def Question():
     #csvreader = csv.reader(open("JEOPARDY_CSV.csv"))
     #x = random.randint(0, 216931)
