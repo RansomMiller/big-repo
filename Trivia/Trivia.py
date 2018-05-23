@@ -32,7 +32,7 @@ def spawn_answer():
 
 
 
-spawn_answer()s
+spawn_answer()
 
 
 SIZE = 30
