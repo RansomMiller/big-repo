@@ -53,7 +53,6 @@ def glasshouse():
     y = pos.y
     z = pos.z
     midx = x + SIZE / 2
-    midy = y + SIZE / 2
     mc.setBlocks(x, y, z, x + SIZE, y + SIZE, z + SIZE, block.GLASS.id)
     mc.setBlocks(x + 1, y, z + 1, x + SIZE - 2, y + SIZE - 1, z + SIZE - 2, block.AIR.id)
     mc.setBlocks(midx - 1, y, z, midx + 1, y + 3, z, block.AIR.id)
