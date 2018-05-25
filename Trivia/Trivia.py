@@ -4,17 +4,30 @@ import mcpi.vec3 as Vec3 # block detector
 import time
 from random import *
 import csv
+import pandas as pd
 
 mc = minecraft.Minecraft.create()
 
 old_Questions = {}
+this_Question = {}
+q = 1
 
 #Ransom and Rhys's question boi
-#def Question():
-    #csvreader = csv.reader(open("JEOPARDY_CSV.csv"))
-    #x = random.randint(0, 216931)
-    #for row in csvreader:
-        #if row == x:
+def Question():
+    global old_Questions, q
+    Location = r'JEOPARDY_CSV.csv'
+    df = pd.read_csv(Location)
+    x = random.randint(0, 216930)
+    for questions in old_Questions:
+        if questions != x:
+            this_Question['question'] = df['Question'].iloc[int(x)]
+            this_Question['category'] = df['Category'].iloc[int(x)]
+            this_Question['answer'] = df['Answer'].iloc[int(x)]
+            print("Question" + str(q))
+            time.sleep(4)
+            print(str(this_Question['question']))
+            q += 1
+#Question()
 
 
 BlockOrder = [[0, 0, 0],  # the original grid
