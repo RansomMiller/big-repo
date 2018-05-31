@@ -4,31 +4,32 @@ import mcpi.vec3 as Vec3 # block detector
 import time
 from random import *
 import csv
-import pandas as pd
 
 mc = minecraft.Minecraft.create()
 
-old_Questions = {}
-this_Question = {}
+Category = []
+Question = []
+Answer = []
 q = 1
 
 #Ransom and Rhys's question boi
-def Question():
-    global old_Questions, q
-    Location = r'JEOPARDY_CSV.csv'
-    df = pd.read_csv(Location)
-    x = random.randint(0, 216930)
-    for questions in old_Questions:
-        if questions != x:
-            this_Question['question'] = df['Question'].iloc[int(x)]
-            this_Question['category'] = df['Category'].iloc[int(x)]
-            this_Question['answer'] = df['Answer'].iloc[int(x)]
-            print("Question" + str(q))
-            time.sleep(4)
-            print(str(this_Question['question']))
-            q += 1
-#Question()
+def Questionfam():
+    global Category, Question, Answer, q
+    f = open('JEOPARDY_CSV.csv', 'r')
+    read = csv.DictReader(f)
+    for row in read:
+        if "www." not in str(row['Question']):
+            Category.append(str(row['Category']))
+            Question.append(str(row['Question']))
+            Answer.append(str(row["Answer"]))
 
+def nextQuestion():
+    global Category, Question, Answer
+    x = randint(0,111131)
+    mc.postToChat(Question[x])
+
+Questionfam()
+nextQuestion()
 
 BlockOrder = [[0, 0, 0],  # the original grid
               [0, 0, 0],
@@ -37,6 +38,7 @@ BlockOrder = [[0, 0, 0],  # the original grid
 
 #Matt's question block placement
 def spawn_answer():
+    pos = mc.player.getTilePos()
     x = 0
     placement = 1
     for r in range(0,4):
@@ -86,17 +88,8 @@ glasshouse()
 
 
 
-def anitblock_breaker():
-    for r in range(1, 9):  # how big it scans the blocks
-        BlockOrder2 = getBlocks(Vec3)  # scans the block to see if it's in the original grid
-        if not BlockOrder == BlockOrder2:  # if they are not then it places the original grid
-            mc.setBlocks(BlockOrder, block.# house.id) #placing blocks of the original grid
-
-
-
-
-
-
-
-
-
+#def anitblock_breaker():
+    #for r in range(1, 9):  # how big it scans the blocks
+        #BlockOrder2 = getBlocks(Vec3)  # scans the block to see if it's in the original grid
+        #if not BlockOrder == BlockOrder2:  # if they are not then it places the original grid
+            #mc.setBlocks(BlockOrder, block.# house.id) #placing blocks of the original grid
