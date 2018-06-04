@@ -11,9 +11,10 @@ Category = []
 Question = []
 Answer = []
 q = 1
+Question_number=0
 
 #Ransom and Rhys's question boi
-def Questionfam():
+def GenerateQuestionlists():
     global Category, Question, Answer, q
     f = open('JEOPARDY_CSV.csv', 'r')
     read = csv.DictReader(f)
@@ -24,11 +25,17 @@ def Questionfam():
             Answer.append(str(row["Answer"]))
 
 def nextQuestion():
-    global Category, Question, Answer
-    x = randint(0,111131)
-    mc.postToChat(Question[x])
+    global Category, Question, Answer, Question_number, Answer
+    catagory_list=[]
+    Question_number = randint(0,111131)
+    mc.postToChat(Question[Question_number])
+    Answer=(Answer[Question_number])
+    for items in Category:
+        if Catagory(Question_number)== items    #hey, buddy, you are trying to create a list of answers based on the catagory, then you will generate 3 random answers from that list and then randomize all 4 answers to correspond with block coordinates A,B,C,D. then you will laugh in ransoms face and then cry.,
+            catagory_list.append(items, answer[items])
 
-Questionfam()
+
+GenerateQuestionlists()
 nextQuestion()
 
 BlockOrder = [[0, 0, 0],  # the original grid
@@ -45,6 +52,16 @@ def spawn_answer():
         mc.setBlock(pos.x+2, pos.y,  pos.z, block.WOOL, 3)
         #pos.z +=
         pos.x += 2
+
+
+#def get_answers
+    #global Answer
+    #for Answer in Answer
+        #random(int)
+
+
+
+
 
 
 #Rhysy poodles answer boi
