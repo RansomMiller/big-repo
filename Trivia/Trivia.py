@@ -47,6 +47,15 @@ def spawn_answer():
         pos.x += 2
 
 
+#Rhysy poodles answer boi
+#def answer_boi
+    #global question Answer
+    #for time in range:
+        #if answer==player_answer
+            #score=score+1
+            #mc.postToChat("Correct!")
+    
+
 
 
 
