@@ -25,17 +25,17 @@ def GenerateQuestionlists():
             Answer.append(str(row["Answer"]))
 
 def nextQuestion():
-    global Category, Question, Answer, Question_number, Answer
+    global Category, Question, Answer, Question_number
     Category_answers=[]
     wrong_answers=[]
     Question_number = randint(0,111131)
     mc.postToChat(Question[Question_number])
-    Answer=(Answer[Question_number])
+    Real_Answer=(Answer[Question_number])
     for items in Category:
-        if Category(Question_number)== items:#hey, buddy, you are trying to create a list of answers based on the category, then you will generate 3 random answers from that list and then randomize all 4 answers to correspond with block coordinates A,B,C,D. then you will laugh in ransoms face and then cry :'(
-            Category_answers.append(Answer(Category.index(items)))
-    for i in range(3):
-        wrong_answers.append(Category_answers(randint(0,len(Category_answers))))
+        if items == Category[Question_number]:#hey, buddy, you are trying to create a list of answers based on the category, then you will generate 3 random answers from that list and then randomize all 4 answers to correspond with block coordinates A,B,C,D. then you will laugh in ransoms face and then cry :'(
+            Category_answers.append(Answer[Category.index(items)])
+    #for i in range(3):
+        #wrong_answers.append(Category_answers(randint(0,len(Category_answers))))
 
 
 
@@ -83,7 +83,7 @@ def spawn_answer():
 
 
 
-spawn_answer()
+#spawn_answer()
 
 
 def location():
