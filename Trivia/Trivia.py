@@ -32,7 +32,7 @@ def nextQuestion():
     mc.postToChat(Question[Question_number])
     Real_Answer=(Answer[Question_number])
     for items in Category:
-        if items == Category[Question_number]:#hey, buddy, you are trying to create a list of answers based on the category, then you will generate 3 random answers from that list and then randomize all 4 answers to correspond with block coordinates A,B,C,D. then you will laugh in ransoms face and then cry :'(
+        if items == Category[Question_number]:
             Category_answers.append(Answer[Category.index(items)])
     #for i in range(3):
         #wrong_answers.append(Category_answers(randint(0,len(Category_answers))))
