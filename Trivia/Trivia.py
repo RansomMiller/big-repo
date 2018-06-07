@@ -38,10 +38,6 @@ def nextQuestion():
         #wrong_answers.append(Category_answers(randint(0,len(Category_answers))))
 
 
-
-
-
-
 GenerateQuestionlists()
 nextQuestion()
 
@@ -56,68 +52,37 @@ def spawn_answer():
     x = 0
     placement = 1
     for r in range(0,4):
-        mc.setBlock(pos.x+2, pos.y,  pos.z, block.WOOL, 3)
-        #pos.z +=
-        pos.x += 2
-
-
-#def get_answers
-    #global Answer
-    #for Answer in Answer
-        #random(int)
-
-
-
-
-
-
-#Rhysy poodles answer boi
-#def answer_boi
-    #global question Answer
-    #for time in range:
-        #if answer==player_answer
-            #score=score+1
-            #mc.postToChat("Correct!")
-    
-
-
-
-
-#spawn_answer()
+        mc.setBlock(pos.x-1, pos.y,  pos.z+2, block.WOOL.id, 1+x)
+        pos.z += 3
+        #pos.x += 3
+        x += 1
 
 
 def location():
-    def mainHouse():
-        SIZE = 30
-        pos = mc.player.getTilePos()
-        x = pos.x
-        y = pos.y
-        z = pos.z
-        midx = x + SIZE / 2
-        midy = y + SIZE / 2
-        mc.setBlocks(x - 10, y - 1, z - 10, x + SIZE + 4, y + SIZE, z + SIZE, block.BEACON.id)
-        mc.setBlocks(x - 10, y, z - 10, x + SIZE / 2, y + 10, z + SIZE / 2, block.GLASS.id)
-        mc.setBlocks(x - 9, y, z - 9, x + SIZE - 2, y + SIZE - 1, z + SIZE - 2, block.AIR.id)
+    SIZE = 30
+    pos = mc.player.getTilePos()
+    x = pos.x
+    y = pos.y
+    z = pos.z
+    midx = x + SIZE / 2
+    midy = y + SIZE / 2
+    mc.setBlocks(x - 10, y - 1, z - 10, x + SIZE + 4, y + SIZE, z + SIZE, block.BEACON.id)
+    mc.setBlocks(x - 10, y, z - 10, x + SIZE / 2, y + 10, z + SIZE / 2, block.GLASS.id)
+    mc.setBlocks(x - 9, y, z - 9, x + SIZE - 2, y + SIZE - 1, z + SIZE - 2, block.AIR.id)
+    SIZE = 10
+    x = pos.x + 5
+    y = pos.y
+    z = pos.z
+    mc.setBlocks(x, y, z, x + SIZE, y + SIZE, z + SIZE, block.GLASS.id)
+    mc.setBlocks(x + 1, y, z + 1, x + SIZE - 2, y + SIZE - 1, z + SIZE - 2, block.AIR.id)
+    mc.setBlocks(midx - 1, y, z, midx + 1, y + 3, z, block.AIR.id)
+    mc.setBlocks(x + 3, y + SIZE - 3, z, midx - 3, y, z, block.GLASS.id)
+    mc.setBlocks(midx + 3, y + SIZE - 3, z, x + SIZE, y, z, block.GLASS.id)
+    mc.setBlocks(x, y + SIZE - 1, z, x + SIZE, y + SIZE - 1, z + SIZE, block.GLASS.id)
+    mc.setBlocks(x + 1, y - 1, z + 1, x + SIZE - 2, y - 1, z + SIZE - 2, block.GLASS.id, )
+location()
+spawn_answer()
 
-    mainHouse()
-
-    def glasshouse():
-        SIZE = 10
-        pos = mc.player.getTilePos()
-        x = pos.x + 5
-        y = pos.y
-        z = pos.z
-        midx = x + SIZE / 2
-        midy = y + SIZE / 2
-        mc.setBlocks(x, y, z, x + SIZE, y + SIZE, z + SIZE, block.GLASS.id)
-        mc.setBlocks(x + 1, y, z + 1, x + SIZE - 2, y + SIZE - 1, z + SIZE - 2, block.AIR.id)
-        mc.setBlocks(midx - 1, y, z, midx + 1, y + 3, z, block.AIR.id)
-        mc.setBlocks(x + 3, y + SIZE - 3, z, midx - 3, z, block.GLASS.id)
-        mc.setBlocks(midx + 3, y + SIZE - 3, z, x + SIZE, z, block.GLASS.id)
-        mc.setBlocks(x, y + SIZE - 1, z, x + SIZE, y + SIZE - 1, z + SIZE, block.GLASS.id)
-        mc.setBlocks(x + 1, y - 1, z + 1, x + SIZE - 2, y - 1, z + SIZE - 2, block.GLASS.id, )
-
-    glasshouse()
 
 
 
