@@ -13,6 +13,7 @@ Answer = []
 q = 1
 Question_number=0
 Answer_list=[]
+Answer_Blocks = []
 #Ransom and Rhys's question boi
 def GenerateQuestionlists():
     global Category, Question, Answer, q
@@ -27,15 +28,22 @@ def GenerateQuestionlists():
 def nextQuestion():
     global Category, Question, Answer, Question_number
     Category_answers=[]
-    wrong_answers=[]
-    Question_number = randint(0,111131)
+    optional_answers=[]
+    Question_number = randint(1,111131)
     mc.postToChat(Question[Question_number])
+    Real_Category = Category[Question_number]
     Real_Answer=(Answer[Question_number])
-    for items in Category:
-        if items == Category[Question_number]:
-            Category_answers.append(Answer[Category.index(items)])
-    #for i in range(3):
-        #wrong_answers.append(Category_answers(randint(0,len(Category_answers))))
+    for index in range(len(Category)):
+        if Category[index] == Real_Category:
+            if index != Question_number:
+                Category_answers.append(Answer[index])
+    print(Category_answers)
+    for i in range(3):
+        x = randint(0,(len(Category_answers)-1))
+        optional_answers.append(Category_answers[x])
+        del Category_answers[x]
+    optional_answers.append(Real_Answer)
+    print(optional_answers)
 
 
 GenerateQuestionlists()
@@ -48,11 +56,13 @@ BlockOrder = [[0, 0, 0],  # the original grid
 
 #Matt's question block placement
 def spawn_answer():
+    global Answer_Blocks
     pos = mc.player.getTilePos()
     x = 0
     placement = 1
     for r in range(0,4):
         mc.setBlock(pos.x-1, pos.y,  pos.z+2, block.WOOL.id, 1+x)
+        Answer_Blocks.append(Vec3[pos.x-1, pos.y,  pos.z+2])
         pos.z += 3
         #pos.x += 3
         x += 1
