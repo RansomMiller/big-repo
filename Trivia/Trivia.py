@@ -1,6 +1,6 @@
 import mcpi.minecraft as minecraft
 import mcpi.block as block
-import mcpi.vec3 as Vec3 # block detector
+from mcpi.vec3 import Vec3 # block detector
 import time
 from random import *
 import csv
@@ -26,13 +26,13 @@ def GenerateQuestionlists():
             Answer.append(str(row["Answer"]))
 
 def nextQuestion():
-    global Category, Question, Answer, Question_number
+    global Category, Question, Answer, Question_number, Real_Answer
     Category_answers=[]
     optional_answers=[]
-    Question_number = randint(1,111131)
+    Question_number = randint(1,111130)
     mc.postToChat(Question[Question_number])
     Real_Category = Category[Question_number]
-    Real_Answer=(Answer[Question_number])
+    Real_Answer = Answer[Question_number]
     for index in range(len(Category)):
         if Category[index] == Real_Category:
             if index != Question_number:
@@ -62,7 +62,8 @@ def spawn_answer():
     placement = 1
     for r in range(0,4):
         mc.setBlock(pos.x-1, pos.y,  pos.z+2, block.WOOL.id, 1+x)
-        Answer_Blocks.append(Vec3[pos.x-1, pos.y,  pos.z+2])
+        coordinate = Vec3(pos.x-1, pos.y,  pos.z+2)
+        Answer_Blocks.append(coordinate)
         pos.z += 3
         #pos.x += 3
         x += 1
