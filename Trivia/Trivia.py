@@ -77,7 +77,7 @@ def location():
     z = pos.z
     midx = x + SIZE / 2
     midy = y + SIZE / 2
-    mc.setBlocks(x - 10, y - 1, z - 10, x + SIZE + 4, y + SIZE, z + SIZE, block.LAVA.id)
+    mc.setBlocks(x - 10, y - 1, z - 10, x + SIZE + 4, y + SIZE, z + SIZE, block.BEACON.id)
     mc.setBlocks(x - 10, y, z - 10, x + SIZE / 2, y + 10, z + SIZE / 2, block.GLASS.id)
     mc.setBlocks(x - 9, y, z - 9, x + SIZE - 2, y + SIZE - 1, z + SIZE - 2, block.AIR.id)
     SIZE = 10
