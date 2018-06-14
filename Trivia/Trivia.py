@@ -3,6 +3,7 @@ import mcpi.block as block
 from mcpi.vec3 import Vec3 # block detector
 import time
 from random import *
+from random import shuffle
 import csv
 
 mc = minecraft.Minecraft.create()
@@ -12,8 +13,10 @@ Question = []
 Answer = []
 q = 1
 Question_number=0
+treasure = 0
 Answer_list=[]
 Answer_Blocks = []
+Jefferson = False
 #Ransom and Rhys's question boi
 def GenerateQuestionlists():
     global Category, Question, Answer, q
@@ -26,13 +29,14 @@ def GenerateQuestionlists():
             Answer.append(str(row["Answer"]))
 
 def nextQuestion():
-    global Category, Question, Answer, Question_number, Real_Answer
+    global Category, Question, Answer, Question_number, Real_Answer, Answer_Blocks, optional_answers, Jefferson
     Category_answers=[]
     optional_answers=[]
-    Question_number = randint(1,111130)
+    Question_number = randint(2,111130)
     mc.postToChat(Question[Question_number])
     Real_Category = Category[Question_number]
     Real_Answer = Answer[Question_number]
+    print(Real_Answer)
     for index in range(len(Category)):
         if Category[index] == Real_Category:
             if index != Question_number:
@@ -43,11 +47,38 @@ def nextQuestion():
         optional_answers.append(Category_answers[x])
         del Category_answers[x]
     optional_answers.append(Real_Answer)
+    shuffle(optional_answers)
     print(optional_answers)
+    mc.postToChat("Orange answer is " + optional_answers[0])
+    time.sleep(1)
+    mc.postToChat("Purple answer is " + optional_answers[1])
+    time.sleep(1)
+    mc.postToChat("Blue answer is " + optional_answers[2])
+    time.sleep(1)
+    mc.postToChat("Yellow answer is " + optional_answers[3])
+    Jefferson = True
 
+def checkAnswer():
+    global Category, Question, Answer, Question_number, Real_Answer, Answer_Blocks, optional_answers, treasure
+    events = mc.events.pollBlockHits()
+    for e in events:  # checks what player has done
+        pos = e.pos
+        for items in Answer_Blocks:
+            if items == pos:
+                x = Answer_Blocks.index(items)
+                if optional_answers[x] == Real_Answer:
+                    treasure += 1
+                else:
+                    treasure -= 1
 
-GenerateQuestionlists()
-nextQuestion()
+def clear_area():
+    SIZE = 50
+    pos = mc.player.getTilePos()
+    x = pos.x
+    y= pos.y
+    z = pos.z
+    mc.setBlocks(x - SIZE, y, z - SIZE, x + SIZE, y + SIZE, z + SIZE, block.AIR.id)
+
 
 BlockOrder = [[0, 0, 0],  # the original grid
               [0, 0, 0],
@@ -91,11 +122,16 @@ def location():
     mc.setBlocks(midx + 3, y + SIZE - 3, z, x + SIZE, y, z, block.GLASS.id)
     mc.setBlocks(x, y + SIZE - 1, z, x + SIZE, y + SIZE - 1, z + SIZE, block.GLASS.id)
     mc.setBlocks(x + 1, y - 1, z + 1, x + SIZE - 2, y - 1, z + SIZE - 2, block.GLASS.id, )
+
+clear_area()
 location()
 spawn_answer()
+GenerateQuestionlists()
+nextQuestion()
 
 
-
+while Jefferson:
+    checkAnswer()
 
 
 
