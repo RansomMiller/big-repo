@@ -123,8 +123,9 @@ def spawn_answer(intake):
         x += 1
 
 
-#def Replay():
-    #clear_area(2)
+def Replay():
+    clear_area()
+    spawn_answer(2)
 
 
 def mark_is_a_cuck():
@@ -155,7 +156,7 @@ def glass_house():
 clear_area()
 mark_is_a_cuck()
 glass_house()
-spawn_answer(2)
+spawn_answer(4)
 GenerateQuestionlists()
 nextQuestion()
 
