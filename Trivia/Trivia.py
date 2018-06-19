@@ -4,53 +4,7 @@ from mcpi.vec3 import Vec3 # block detector
 import time
 from random import *
 from random import shuffle
-import mcpi.minecraftstuff as minecraftstuff
 import csv
-import math
-
-
-mc = minecraft.Minecraft.create()
-mcdrawing = minecraftstuff.MinecraftDrawing(mc)
-
-def clear_area():
-    SIZE = 50
-    pos = mc.player.getTilePos()
-    x = pos.x
-    y= pos.y
-    z = pos.z
-    mc.setBlocks(x - SIZE, y, z - SIZE, x + SIZE, y + SIZE, z + SIZE, block.AIR.id)
-
-
-clear_area()
-
-def findPointOnCircle(cx, cy, radius, angle):
-    x = cx + math.sin(math.radians(angle)) * radius
-    y = cy + math.cos(math.radians(angle)) * radius
-    x = int(round(x, 0))
-    y = int(round(y, 0))
-    return(x,y)
-
-mc = minecraft.Minecraft.create()
-mcdrawing = minecraftstuff.MinecraftDrawing(mc)
-
-pyramidMiddle = mc.player.getTilePos()
-
-PYRAMID_RADIUS = 30
-PYRAMID_HEIGHT = 50
-PYRAMID_SIDES = 4
-
-for side in range(0, PYRAMID_SIDES):
-    point1Angle = int(round((360 / PYRAMID_SIDES) * side, 0))
-    point1X, point1Z = findPointOnCircle(
-        pyramidMiddle.x, pyramidMiddle.z, PYRAMID_RADIUS, point1Angle)
-    point2Angle = int(round((360 / PYRAMID_SIDES) * (side +1), 0))
-
-    point2X, point2Z = findPointOnCircle(pyramidMiddle.x, pyramidMiddle.z, PYRAMID_RADIUS, point2Angle)
-    trianglePoints= []
-    trianglePoints.append(minecraft.Vec3(point1X, pyramidMiddle.y, point1Z))
-    trianglePoints.append(minecraft.Vec3(point2X, pyramidMiddle.y, point2Z))
-    trianglePoints.append(minecraft.Vec3(pyramidMiddle.x, pyramidMiddle.y +PYRAMID_HEIGHT, pyramidMiddle.z))
-    mcdrawing.drawFace(trianglePoints, True, block.BEACON.id)
 
 mc = minecraft.Minecraft.create()
 
@@ -63,7 +17,7 @@ treasure = 0
 WIN=10
 treasure = 2
 Answer_list=[]
-Answer_Blocks = []
+Carl = True
 Jefferson = False
 thompson = False
 
@@ -80,7 +34,7 @@ def GenerateQuestionlists():
             Answer.append(str(row["Answer"]))
 
 def nextQuestion():
-    global Category, Question, Answer, Question_number, Real_Answer, Answer_Blocks, optional_answers, Jefferson, thompson
+    global Category, Question, Answer, Question_number, Real_Answer, Answer_Blocks, optional_answers, Jefferson, thompson, Carl
     Category_answers=[]
     optional_answers=[]
     Question_number = randint(1,q-1)
@@ -93,7 +47,11 @@ def nextQuestion():
             if index != Question_number:
                 Category_answers.append(Answer[index])
     print(Category_answers)
-    for i in range(3):
+    if len(Category_answers) < 3:
+        t = len(Category_answers)
+    else:
+        t = 3
+    for i in range(t):
         x = randint(0,(len(Category_answers)-1))
         optional_answers.append(Category_answers[x])
         del Category_answers[x]
@@ -109,6 +67,7 @@ def nextQuestion():
     mc.postToChat("Yellow answer is " + optional_answers[3])
     Jefferson = True
     thompson = False
+    Carl = False
 
 def checkAnswer():
     global Category, Question, Answer, Question_number, Real_Answer, Answer_Blocks, optional_answers, treasure, WIN, thompson, treasure
@@ -124,6 +83,7 @@ def checkAnswer():
                     treasure += 1
                     if treasure == WIN:
                         mc.postToChat("CORRECT, YOU WIN!")
+                        Replay()
                     else:
                         mc.postToChat("Correct! You have " + str(treasure) + " treasure remaining "
                                   "You need " + str(WIN) + " treasure to win. Next Question...")
@@ -133,7 +93,9 @@ def checkAnswer():
                 else:
                     treasure -= 1
                     if treasure == 0:
+                        mc.postToChat("Incorrect. The real answer was " + str(Real_Answer) + " You have no treasure remaining.")
                         mc.postToChat("YOU LOSE")
+                        Replay()
                     else:
                         mc.postToChat("Incorrect. The real answer was " + str(Real_Answer) + " You have "
                                         + str(treasure) + " remaining. Next Question...")
@@ -157,6 +119,7 @@ BlockOrder = [[0, 0, 0],  # the original grid
 #Matt's question block placement
 def spawn_answer(intake):
     global Answer_Blocks
+    Answer_Blocks = []
     pos = mc.player.getTilePos()
     x = 0
     placement = 1
@@ -170,10 +133,41 @@ def spawn_answer(intake):
 
 
 def Replay():
+    global Answer_Blocks,  Jefferson, Stephen
+    Jefferson = False
     clear_area()
     spawn_answer(2)
+    mc.postToChat("Press the orange block to replay. "
+                  " Press the purple block to quit the game.")
+    Stephen = True
+    while Stephen:
+        replay_Rumble()
+
+def replay_Rumble():
+    global Carl, Stephen
+    events = mc.events.pollBlockHits()
+    for e in events:  # checks what player has done
+        pos = e.pos
+        for items in Answer_Blocks:
+            if items == pos:
+                if Answer_Blocks.index(items) == 0:
+                    Carl = True
+                    Stephen = False
+                else:
+                    clear_area()
+                    mc.postToChat("Thanks for playing!")
+                    Stephen = False
 
 
+def beacon_Home():
+    SIZE = 30
+    pos = mc.player.getTilePos()
+    x = pos.x
+    y = pos.y
+    z = pos.z
+    mc.setBlocks(x - 10, y - 1, z - 10, x + SIZE + 4, y + SIZE, z + SIZE, block.BEACON.id)
+    mc.setBlocks(x - 10, y, z - 10, x + SIZE / 2, y + 10, z + SIZE / 2, block.GLASS.id)
+    mc.setBlocks(x - 9, y, z - 9, x + SIZE - 2, y + SIZE - 1, z + SIZE - 2, block.AIR.id)
 
 def glass_house():
     pos = mc.player.getTilePos()
@@ -190,16 +184,20 @@ def glass_house():
     mc.setBlocks(x, y + SIZE - 1, z, x + SIZE, y + SIZE - 1, z + SIZE, block.GLASS.id)
     mc.setBlocks(x + 1, y - 1, z + 1, x + SIZE - 2, y - 1, z + SIZE - 2, block.GLASS.id, )
 
-
-glass_house()
-spawn_answer(4)
-GenerateQuestionlists()
-nextQuestion()
+if Carl:
+    clear_area()
+    beacon_Home()
+    glass_house()
+    spawn_answer(4)
+    GenerateQuestionlists()
+    nextQuestion()
 
 while Jefferson:
     checkAnswer()
     if thompson:
         nextQuestion()
+
+
 
 
 
