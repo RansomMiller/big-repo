@@ -11,12 +11,16 @@ mc = minecraft.Minecraft.create()
 Category = []
 Question = []
 Answer = []
-q = 1
+q = 0
 Question_number=0
 treasure = 0
+WIN=10
+treasure = 2
 Answer_list=[]
 Answer_Blocks = []
 Jefferson = False
+thompson = False
+
 #Ransom and Rhys's question boi
 def GenerateQuestionlists():
     global Category, Question, Answer, q
@@ -24,15 +28,16 @@ def GenerateQuestionlists():
     read = csv.DictReader(f)
     for row in read:
         if "www." not in str(row['Question']):
+            q += 1
             Category.append(str(row['Category']))
             Question.append(str(row['Question']))
             Answer.append(str(row["Answer"]))
 
 def nextQuestion():
-    global Category, Question, Answer, Question_number, Real_Answer, Answer_Blocks, optional_answers, Jefferson
+    global Category, Question, Answer, Question_number, Real_Answer, Answer_Blocks, optional_answers, Jefferson, thompson
     Category_answers=[]
     optional_answers=[]
-    Question_number = randint(2,111130)
+    Question_number = randint(1,q-1)
     mc.postToChat(Question[Question_number])
     Real_Category = Category[Question_number]
     Real_Answer = Answer[Question_number]
@@ -57,9 +62,12 @@ def nextQuestion():
     time.sleep(1)
     mc.postToChat("Yellow answer is " + optional_answers[3])
     Jefferson = True
+    thompson = False
 
 def checkAnswer():
-    global Category, Question, Answer, Question_number, Real_Answer, Answer_Blocks, optional_answers, treasure
+    global Category, Question, Answer, Question_number, Real_Answer, Answer_Blocks, optional_answers, treasure, WIN, thompson, treasure
+    SIZE = 10
+    list = []
     events = mc.events.pollBlockHits()
     for e in events:  # checks what player has done
         pos = e.pos
@@ -68,8 +76,24 @@ def checkAnswer():
                 x = Answer_Blocks.index(items)
                 if optional_answers[x] == Real_Answer:
                     treasure += 1
+                    if treasure == WIN:
+                        mc.postToChat("CORRECT, YOU WIN!")
+                    else:
+                        mc.postToChat("Correct! You have " + str(treasure) + " treasure remaining "
+                                  "You need " + str(WIN) + " treasure to win. Next Question...")
+                        time.sleep(3)
+                        thompson = True
+                    #mc.getBlocks(pos.x-1, pos.y, pos.z-1, pos.x + SIZE-1, pos.y + SIZE-1, pos.z + SIZE-1)
                 else:
                     treasure -= 1
+                    if treasure == 0:
+                        mc.postToChat("YOU LOSE")
+                    else:
+                        mc.postToChat("Incorrect. The real answer was " + str(Real_Answer) + " You have "
+                                        + str(treasure) + " remaining. Next Question...")
+                        time.sleep(3)
+                        thompson = True
+
 
 def clear_area():
     SIZE = 50
@@ -84,14 +108,13 @@ BlockOrder = [[0, 0, 0],  # the original grid
               [0, 0, 0],
               [0, 0, 0]]
 
-
 #Matt's question block placement
-def spawn_answer():
+def spawn_answer(intake):
     global Answer_Blocks
     pos = mc.player.getTilePos()
     x = 0
     placement = 1
-    for r in range(0,4):
+    for r in range(0,intake):
         mc.setBlock(pos.x-1, pos.y,  pos.z+2, block.WOOL.id, 1+x)
         coordinate = Vec3(pos.x-1, pos.y,  pos.z+2)
         Answer_Blocks.append(coordinate)
@@ -100,21 +123,27 @@ def spawn_answer():
         x += 1
 
 
-def location():
+#def Replay():
+    #clear_area(2)
+
+
+def mark_is_a_cuck():
     SIZE = 30
     pos = mc.player.getTilePos()
     x = pos.x
     y = pos.y
     z = pos.z
-    midx = x + SIZE / 2
-    midy = y + SIZE / 2
     mc.setBlocks(x - 10, y - 1, z - 10, x + SIZE + 4, y + SIZE, z + SIZE, block.BEACON.id)
     mc.setBlocks(x - 10, y, z - 10, x + SIZE / 2, y + 10, z + SIZE / 2, block.GLASS.id)
     mc.setBlocks(x - 9, y, z - 9, x + SIZE - 2, y + SIZE - 1, z + SIZE - 2, block.AIR.id)
+
+def glass_house():
+    pos = mc.player.getTilePos()
     SIZE = 10
     x = pos.x + 5
     y = pos.y
     z = pos.z
+    midx = x + SIZE / 2
     mc.setBlocks(x, y, z, x + SIZE, y + SIZE, z + SIZE, block.GLASS.id)
     mc.setBlocks(x + 1, y, z + 1, x + SIZE - 2, y + SIZE - 1, z + SIZE - 2, block.AIR.id)
     mc.setBlocks(midx - 1, y, z, midx + 1, y + 3, z, block.AIR.id)
@@ -124,14 +153,16 @@ def location():
     mc.setBlocks(x + 1, y - 1, z + 1, x + SIZE - 2, y - 1, z + SIZE - 2, block.GLASS.id, )
 
 clear_area()
-location()
-spawn_answer()
+mark_is_a_cuck()
+glass_house()
+spawn_answer(2)
 GenerateQuestionlists()
 nextQuestion()
 
-
 while Jefferson:
     checkAnswer()
+    if thompson:
+        nextQuestion()
 
 
 
