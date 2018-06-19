@@ -5,6 +5,52 @@ import time
 from random import *
 from random import shuffle
 import csv
+import math
+import mcpi.minecraftstuff as minecraftstuff
+
+mc = minecraft.Minecraft.create()
+mcdrawing = minecraftstuff.MinecraftDrawing(mc)
+
+def clear_area():
+    SIZE = 50
+    pos = mc.player.getTilePos()
+    x = pos.x
+    y= pos.y
+    z = pos.z
+    mc.setBlocks(x - SIZE, y, z - SIZE, x + SIZE, y + SIZE, z + SIZE, block.AIR.id)
+clear_area()
+
+def findPointOnCircle(cx, cy, radius, angle):
+    x = cx + math.sin(math.radians(angle)) * radius
+    y = cy + math.cos(math.radians(angle)) * radius
+    x = int(round(x, 0))
+    y = int(round(y, 0))
+    return(x,y)
+
+mc = minecraft.Minecraft.create()
+mcdrawing = minecraftstuff.MinecraftDrawing(mc)
+
+pyramidMiddle = mc.player.getTilePos()
+
+PYRAMID_RADIUS = 30
+PYRAMID_HEIGHT = 50
+PYRAMID_SIDES = 4
+
+for side in range(0, PYRAMID_SIDES):
+    point1Angle = int(round((360 / PYRAMID_SIDES) * side, 0))
+    point1X, point1Z = findPointOnCircle(
+        pyramidMiddle.x, pyramidMiddle.z, PYRAMID_RADIUS, point1Angle)
+    point2Angle = int(round((360 / PYRAMID_SIDES) * (side +1), 0))
+
+    point2X, point2Z = findPointOnCircle(pyramidMiddle.x, pyramidMiddle.z, PYRAMID_RADIUS, point2Angle)
+    trianglePoints= []
+    trianglePoints.append(minecraft.Vec3(point1X, pyramidMiddle.y, point1Z))
+    trianglePoints.append(minecraft.Vec3(point2X, pyramidMiddle.y, point2Z))
+    trianglePoints.append(minecraft.Vec3(pyramidMiddle.x, pyramidMiddle.y +PYRAMID_HEIGHT, pyramidMiddle.z))
+    mcdrawing.drawFace(trianglePoints, True, block.BEACON.id)
+
+
+
 
 mc = minecraft.Minecraft.create()
 
@@ -101,17 +147,6 @@ def checkAnswer():
                                         + str(treasure) + " remaining. Next Question...")
                         time.sleep(3)
                         thompson = True
-
-
-def clear_area():
-    SIZE = 50
-    pos = mc.player.getTilePos()
-    x = pos.x
-    y= pos.y
-    z = pos.z
-    mc.setBlocks(x - SIZE, y, z - SIZE, x + SIZE, y + SIZE, z + SIZE, block.AIR.id)
-
-
 BlockOrder = [[0, 0, 0],  # the original grid
               [0, 0, 0],
               [0, 0, 0]]
@@ -159,15 +194,6 @@ def replay_Rumble():
                     Stephen = False
 
 
-def beacon_Home():
-    SIZE = 30
-    pos = mc.player.getTilePos()
-    x = pos.x
-    y = pos.y
-    z = pos.z
-    mc.setBlocks(x - 10, y - 1, z - 10, x + SIZE + 4, y + SIZE, z + SIZE, block.BEACON.id)
-    mc.setBlocks(x - 10, y, z - 10, x + SIZE / 2, y + 10, z + SIZE / 2, block.GLASS.id)
-    mc.setBlocks(x - 9, y, z - 9, x + SIZE - 2, y + SIZE - 1, z + SIZE - 2, block.AIR.id)
 
 def glass_house():
     pos = mc.player.getTilePos()
@@ -185,8 +211,6 @@ def glass_house():
     mc.setBlocks(x + 1, y - 1, z + 1, x + SIZE - 2, y - 1, z + SIZE - 2, block.GLASS.id, )
 
 if Carl:
-    clear_area()
-    beacon_Home()
     glass_house()
     spawn_answer(4)
     GenerateQuestionlists()
